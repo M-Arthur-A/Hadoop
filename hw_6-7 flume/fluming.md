@@ -4,7 +4,7 @@
 
 Задаем наименование flume: flume8_9 на [node2.novalocal](http://89.208.221.132:7180/cmf/hardware/hosts/5/status)
 
-Конфигурируем следующим образом: добавляя в файл на локальной машине `/tmp/student8_9_to_flume.txt` строки, flume их сохраняет в файловую систему HDFS в формате avro `/user/student8_9/flume/` и в БД HBase (2 sink)
+Конфигурируем следующим образом: добавляя в файл на локальной машине `/tmp/student8_9_to_flume.txt` строки, flume их сохраняет в файловую систему HDFS в формате avro `/user/student8_9/flume=[время]/` и в БД HBase (2 sink)
 
 ```flume
 Flume8_9.sources = SourceExec
@@ -25,7 +25,7 @@ Flume8_9.channels.MemChannel.transactionCapacity = 10
 # Описание синка
 Flume8_9.sinks.HDFSsink.type = hdfs
 Flume8_9.sinks.HDFSsink.hdfs.filePrefix = Flume_8_9_data
-Flume8_9.sinks.HDFSsink.hdfs.path = /user/student8_9/flume/
+Flume8_9.sinks.HDFSsink.hdfs.path = /user/student8_9/flume=%Y%m%d/
 Flume8_9.sinks.HDFSsink.hdfs.fileType = DataStream
 Flume8_9.sinks.HDFSsink.hdfs.rollSize = 1048576
 Flume8_9.sinks.HDFSsink.hdfs.rollCount = 0
@@ -63,4 +63,10 @@ Flume8_9.sinks.HBase.channel = MemChannel
 ## На базе созданного flume avro-файла конфигурация таблицы hive
 
 Открытие hive в hue http://89.208.221.132:8888/hue/editor/?type=hive
+
+## Создание таблицы в Hbase
+
+` create 'student8_9_hbase', 'Name', 'logs'` – создание таблицы student8_9_hbase с id строк Name и группой солбцов lo
+
+`list` - проверяем создалась ли  таблица
 
